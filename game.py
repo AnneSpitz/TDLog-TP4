@@ -31,7 +31,6 @@ commandesChoisies = 1
 directionAcceptable = tabDirectionAcceptable[commandesChoisies]
 
 
-# Classe
 class Game:
     def __init__(self, joueur1, joueur2, taille=0, tableauValeurs=0):
         """

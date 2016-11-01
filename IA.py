@@ -28,6 +28,7 @@ def minMax(partie, profondeur, isMax, indiceJoueurIA):
     :param profondeur: (int) Nombre d'itération maximale. Si profondeur = 0 on passe dans
            le cas de base.
     :param isMax: (bool) Si isMax est vrai on cherche le plus grand résultat, sinon le plus faible.
+    :param indiceJoueurIA: (int) Indice du joueur dont on cherche le score
     :return: Renvoie le score calculer sur le moment, sous forme de int.
     """
 

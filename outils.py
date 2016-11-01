@@ -13,7 +13,6 @@
 # /////////////////////////////////////////////////////
 
 
-
 def add(x, y):
     """
     Permet d'additionner terme à terme deux couples ou deux tableaux.
