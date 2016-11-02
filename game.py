@@ -14,6 +14,8 @@
 
 
 import random
+import math
+import copy
 
 import grid
 import player
@@ -29,6 +31,8 @@ tabDirectionAcceptable = [
 
 commandesChoisies = 1
 directionAcceptable = tabDirectionAcceptable[commandesChoisies]
+
+profondeurMax = 4  # Définie la profondeur maximle de l'algorithme de minMax.
 
 
 class Game:
@@ -174,15 +178,14 @@ class Game:
         listeJoueurs = self.listeJoueurs
         nombreJoueurs = len(listeJoueurs)
         scoreJoueurs = [listeJoueurs[numeroJoueur].getScore() for numeroJoueur in
-                         range(nombreJoueurs)]
+                        range(nombreJoueurs)]
         nomJoueurs = [listeJoueurs[numeroJoueur].getNom() for numeroJoueur in
-                       range(nombreJoueurs)]
+                      range(nombreJoueurs)]
 
         maximumEtIndice = outils.maxEtIndice(scoreJoueurs)
         scoreMaximal = maximumEtIndice[0]
         nombreGagnant = maximumEtIndice[1]
         listeGagnant = maximumEtIndice[2]
-
 
         # Affichage du ou des gagnants :
         if nombreGagnant == nombreJoueurs:
@@ -220,3 +223,90 @@ class Game:
         :param nomFichier: (str) Nom du fichier dans lequel on veut écrire la grille de jeu.
         """
         self.grilleJeu.writeGridIntoCSV(nomFichier)
+
+    def minMax(self, profondeur, isMax, indiceJoueurIA):
+        """
+        Applique l'algorithme de min-max à self, sur profondeur itération.
+        :param profondeur: (int) Nombre d'itération maximale. Si profondeur = 0 on passe dans
+           le cas de base.
+        :param isMax: (bool) Si isMax est vrai on cherche le plus grand résultat, sinon le plus faible.
+        :param indiceJoueurIA: (int) Indice du joueur dont on cherche le score
+        :return: Renvoie le score calculer sur le moment, sous forme de int.
+        """
+
+        #  Cas de base :
+        if self.finPartie() or profondeur <= 0:
+
+            return int(self.listeJoueurs[indiceJoueurIA].getScore())
+
+        # Récursion :
+        else:
+
+            #  isMax == True correspond à un coup de l'IA, qui doit prendre le meilleur résultat
+            # possible.
+            if isMax:
+
+                valeur = - math.inf
+
+                # On teste toute les direction qui sont valides :
+                for direction in directionAcceptable:
+                    if self.isDirectionValide(direction):
+                        selfLocal = copy.deepcopy(self)
+                        selfLocal.modifieEtat(direction)
+                        # On remplace valeur si le nouveau score calculé par minMax est meilleur
+                        # (plus grand), sinon on garde valeur.
+                        valeur = max(valeur, selfLocal.minMax(profondeur - 1, False,
+                                                              indiceJoueurIA))
+
+                return int(valeur)
+
+            # isMax == False correspond à un coup du joueur, il faut donc minimiser son score possible.
+            else:
+
+                valeur = math.inf
+
+                # On teste toute les direction qui sont valides :
+                for direction in directionAcceptable:
+                    if self.isDirectionValide(direction):
+                        selfLocal = copy.deepcopy(self)
+                        selfLocal.modifieEtat(direction)
+                        # On remplace valeur si le nouveau score calculé par minMax est meilleur
+                        # (plus petit), sinon on garde valeur.
+                        valeur = min(valeur, selfLocal.minMax(profondeur - 1, True,
+                                                              indiceJoueurIA))
+                return int(valeur)
+
+
+    def choixDirectionIA(self):
+        """
+        Permet à l'IA de choisir la direction optimale, en utilisant la fonction minMax.
+        :return: Renvoie la direction correspondant au score maximale sous forme de str.
+        """
+
+        # Initialisaton d'un dictionnaire de score.
+        score = {}
+        # On sauvegarde l'indice du joueur IA.
+        indiceJoueurIA = self.joueurCourant
+
+        # L'IA tente toutes les directions et va choisir celle dont le minMax renvoie
+        # le plus grand score.
+        valeurOptimale = 0
+        directionChoisie = ""
+
+        for direction in directionAcceptable:
+
+            # On effectue une copie profonde de la self pour pouvoir travailler dessus.
+            selfLocal = copy.deepcopy(self)
+
+            if not selfLocal.isDirectionNonValide(direction):
+
+                # On modifie la position puis on calcule la valeur du minMax.
+                selfLocal.modifieEtat(direction)
+                valeur = selfLocal.minMax(profondeurMax, False, indiceJoueurIA)
+
+                # On modifie la valeurOptimale et la direction si on a une meilleure valeur.
+                if valeur > valeurOptimale:
+                    valeurOptimale = valeur
+                    directionChoisie = direction
+
+        return directionChoisie

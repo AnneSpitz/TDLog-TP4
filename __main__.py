@@ -14,7 +14,7 @@
 
 import pandas
 
-import IA
+#import IA
 import game
 import customExceptions
 
@@ -121,7 +121,7 @@ def gestionTour(partie, isIAPresente):
     # S'il y a une IA, et que c'est à elle de jouer, on appelle la choixDirectionIA.
     if isIAPresente and partie.joueurCourant == 1:
         print("{} refléchit...".format(partie.listeJoueurs[1].getNom()))
-        direction = IA.choixDirectionIA(partie)
+        direction = partie.choixDirectionIA()
     else:
         direction = partie.demandeDirection()
         # On demande la direction tant que celle-ci n'est pas valide.

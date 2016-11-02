@@ -12,259 +12,139 @@
 #
 # /////////////////////////////////////////////////////
 
-
-import sys
-from PyQt4 import QtGui, QtCore
-
-"""
-class MyMainWindow(QtGui.QMainWindow):
-
-    def __init__(self, parent=None):
-
-        super(MyMainWindow, self).__init__(parent)
-        self.a = QtGui.QStatusBar(self)
-        self.form_widget = Example(self)
-        self.setCentralWidget(self.form_widget)
-
-
-class Example(QtGui.QWidget):
-    def __init__(self, parent):
-        super(Example, self).__init__()
-
-        #self.a = QtGui.QStatusBar(self)
-        self.initUI()
-
-
-
-
-    def initUI(self):
-
-        grid = QtGui.QGridLayout()
-        self.setLayout(grid)
-
-
-        names = ['Cls', 'Bck', '', 'Close',
-                 '7', '8', '9', '/',
-                 '4', '5', '6', '*',
-                 '1', '2', '3', '-',
-                 '0', '.', '=', '+']
-
-        positions = [(i, j) for i in range(5) for j in range(4)]
-
-        for position, name in zip(positions, names):
-
-            if name == '':
-                continue
-            button = QtGui.QPushButton(name)
-            button.clicked.connect(self.buttonClicked)
-            grid.addWidget(button, *position)
-        #grid.addWidget(self.a)
-        self.move(300, 150)
-        self.setWindowTitle('Calculator')
-        self.show()
-
-    def buttonClicked(self,parent):
-
-        sender = self.sender()
-        self.a.showMessage(sender.text() + ' was pressed')
-"""
-
-"""
-class Example(QtGui.QMainWindow):
-
-    def __init__(self):
-        super(Example, self).__init__()
-        self.initUI()
-
-    def initUI(self):
-
-        self.setLayout(self.a)
-
-        names = ['Cls', 'Bck', '', 'Close',
-                 '7', '8', '9', '/',
-                 '4', '5', '6', '*',
-                 '1', '2', '3', '-',
-                 '0', '.', '=', '+']
-
-        positions = [(i, j) for i in range(5) for j in range(4)]
-
-        for position, name in zip(positions, names):
-
-            if name == '':
-                continue
-            button = QtGui.QPushButton(name)
-            button.clicked.connect(self.buttonClicked)
-            self.a.addWidget(button, *position)
-
-        self.statusBar()
-
-        self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('TRY HARD')
-        self.show()
-
-    def buttonClicked(self):
-
-        sender = self.sender()
-        self.statusBar().showMessage(sender.text() + ' was pressed')
-
-
-
-
-
-        class Example(QtGui.QMainWindow):
-
-    def __init__(self):
-        super(Example, self).__init__()
-
-        self.initUI()
-
-    def initUI(self):
-
-        btn1 = QtGui.QPushButton("Button 1", self)
-        btn1.move(30, 50)
-
-        btn2 = QtGui.QPushButton("Button 2", self)
-        btn2.move(150, 50)
-
-        btn1.clicked.connect(self.buttonClicked)
-        btn2.clicked.connect(self.buttonClicked)
-
-        self.statusBar()
-
-        self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('Event sender')
-        self.show()
-
-    def buttonClicked(self):
-
-        sender = self.sender()
-        self.statusBar().showMessage(sender.text() + ' was pressed')
-
-def main():
-
-    app = QtGui.QApplication(sys.argv)
-    ex = Example()
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
-"""
-"""
-def main():
-    app = QtGui.QApplication(sys.argv)
-    foo = MyMainWindow()
-    ex = Example(foo)
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
-
-
-"""
-import sys
-
-
-class MyMainWindow(QtGui.QMainWindow):
-    def __init__(self, parent=None):
-        super(MyMainWindow, self).__init__(parent)
-        self.form_widget = FormWidget(self)
-        self.setCentralWidget(self.form_widget)
-        self.initUI()
-
-    def initUI(self):
-        """
-        btn1 = QtGui.QPushButton("Button 1", self)
-        btn1.move(30, 50)
-
-        btn2 = QtGui.QPushButton("Button 2", self)
-        btn2.move(150, 50)
-
-        btn1.clicked.connect(self.buttonClicked)
-        btn2.clicked.connect(self.buttonClicked)
-        """
-        self.statusBar()
-
-        self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('Event sender')
-        self.show()
-
-
-    def buttonClicked(self):
-        sender = self.sender()
-        self.statusBar().showMessage(sender.text() + ' was pressed')
-"""
-class Example(QtGui.QMainWindow):
-
-    def __init__(self):
-        super(Example, self).__init__()
-        self.initUI()
-
-    def initUI(self):
-
-        self.setLayout(self.a)
-
-        names = ['Cls', 'Bck', '', 'Close',
-                 '7', '8', '9', '/',
-                 '4', '5', '6', '*',
-                 '1', '2', '3', '-',
-                 '0', '.', '=', '+']
-
-        positions = [(i, j) for i in range(5) for j in range(4)]
-
-        for position, name in zip(positions, names):
-
-            if name == '':
-                continue
-            button = QtGui.QPushButton(name)
-            button.clicked.connect(self.buttonClicked)
-            self.a.addWidget(button, *position)
-
-        self.statusBar()
-
-        self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('TRY HARD')
-        self.show()"""
-
-
-class FormWidget(QtGui.QWidget):
-    def __init__(self, parent):
-        super(FormWidget, self).__init__(parent)
-        #self.layout = QtGui.QVBoxLayout(self)
-        self.initButton(parent)
-
-    def initButton(self, parent):
-        grid = QtGui.QGridLayout()
-        self.setLayout(grid)
-
-
-        names = ['Cls', 'Bck', '', 'Close',
-                 '7', '8', '9', '/',
-                 '4', '5', '6', '*',
-                 '1', '2', '3', '-',
-                 '0', '.', '=', '+']
-
-        positions = [(i, j) for i in range(5) for j in range(4)]
-
-        for position, name in zip(positions, names):
-
-            if name == '':
-                continue
-            button = QtGui.QPushButton(name)
-            button.clicked.connect(parent.buttonClicked)
-            grid.addWidget(button, *position)
-
-    #self.statusBar()
-
-        self.setGeometry(300, 300, 290, 150)
-
-
-def main():
-    app = QtGui.QApplication(sys.argv)
-    foo = MyMainWindow()
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
+import pandas
+
+
+import game
+import customExceptions
+
+
+def demandeJoueurs():
+    """
+    Demande le nombre de joueur et leur noms.
+    :return: une list contenant le nombre de joueur, et leur noms.
+    """
+
+    nombreJoueur = 0
+
+    # On demande un nombre de joueur entre 1 et 2.
+    while nombreJoueur not in {"1", "2"}:
+        nombreJoueur = input("Partie à combien de joueurs ?\n1/2")
+
+    if nombreJoueur == "1":
+        nomJoueur1 = input("Comment vous appellez-vous ?\n")
+        nomJoueur2 = "GLaDOS"  # Nom par défaut de l'IA.
+    else:
+        nomJoueur1 = input("Nom du joueur 1 :\n")
+        nomJoueur2 = input("Nom du joueur 2 :\n")
+
+    return [nombreJoueur, nomJoueur1, nomJoueur2]
+
+
+def creationOuImportationPartie(nomJoueur1, nomJoueur2):
+    """
+    Cette fonction crée la partie. Soit de manière aléatoire, soit en lisant un fichier,
+    à la demande des joueurs. De plus, elle affiche l'état initiale de la partie et si la partie
+    est aléatoire, demande au joueur s'il veut l'enregistrer.
+    :param nomJoueur1: (str) Nom du joueur 1.
+    :param nomJoueur2: (str) Nom du joueur 2.
+    :return: Renvoie la partie (Game).
+    """
+
+    # On demande si on charge une partie depuis un fichier.
+    reponse = input("Souhaitez-vous importer une grille à partir d'un fichier csv ?\ny/N")
+
+    if reponse.lower() == "y":
+        nomFichier = input("Quel fichier ? (nom sans extension)\n")
+        nomFichier += ".csv"
+
+        try:
+            with open(nomFichier) as csvfile:
+                fichier = pandas.read_csv(csvfile, delimiter=",", header=None)
+        # Si on ne trouve pas le fichier, on change la réponse de l'utilisateur
+        except FileNotFoundError:
+            print("Fichier non trouvé.\nNous allons générer une grille aléatoire.")
+            reponse="n"
+            pass
+        else:
+            partie = game.Game(nomJoueur1, nomJoueur2, tableauValeurs=fichier)
+            partie.affichage()
+
+    # Génération d'une partie avec grille aléatoire si on ne lit pas de fichier.
+    # On utilise un if et non pas un else pour permettre d'entrer dans le bloc si jamais
+    # l'utilisateur demande d'importer un fichier non trouvé (Exception FileNotFoundError)
+    if reponse.lower() != "y":
+        print("Choisissez la taille de la grille.")
+
+        # On s'assure que les paramètres donnés sont corrects :
+        while True:
+            try:
+                tailleDemandee = int(input())
+                partie = game.Game(nomJoueur1, nomJoueur2, taille=tailleDemandee)
+
+            except ValueError:
+                print("Veuillez entrer un chiffre positif et impair.")
+            except customExceptions.TailleNegativeError:
+                print(
+                    "Vous avez entré une taille négative. Veuillez entrer un chiffre positif et impair.")
+            except customExceptions.TaillePaireError:
+                print(
+                    "Vous avez entré une taille paire. Veuillez entrer un chiffre positif et impair.")
+            else:
+                break
+
+        partie.affichage()
+
+        print("\n\n==============================================\n")
+        # Possibilité d'exporter la grille générée aléatoirement :
+        reponse = input(
+            "Souhaitez-vous exporter la grille générée sous forme d'un fichier csv ?\ny/N")
+
+        if reponse.lower() == "y":
+            nomFichier = input(
+                "Quel nom souhaitez-vous donner au fichier ? (nom sans extension)")
+            nomFichier += ".csv"
+            partie.writeIntoCSV(nomFichier)
+
+    return partie
+
+
+def gestionTour(partie, isIAPresente):
+    """
+    Va cherche la direction auprès du joueur (en demandant aux humains et en appelant
+    choixDirectionIA pour l'IA). Puis modifie l'état de la partie.
+    :param partie: (Game) Partie sur laquelle on travaille.
+    :param isIAPresente: (bool) True s'il y a une IA dans la partie.
+    :return: Rien.
+    """
+
+    # S'il y a une IA, et que c'est à elle de jouer, on appelle la choixDirectionIA.
+    if isIAPresente and partie.joueurCourant == 1:
+        print("{} refléchit...".format(partie.listeJoueurs[1].getNom()))
+        direction = partie.choixDirectionIA()
+    else:
+        direction = partie.demandeDirection()
+        # On demande la direction tant que celle-ci n'est pas valide.
+        while partie.isDirectionNonValide(direction):
+            direction = partie.demandeDirection()
+
+    # Une fois qu'on a la direction on modifie l'état.
+    partie.modifieEtat(direction)
+
+    return None
+
+
+def gestionJeu(partie, isIAPresente):
+    """
+    Va appeller gestionTour tant que la partie n'est pas finie, puis afficher le résultat via
+    resultatPartie.
+    :param partie: (Game) Partie sur laquelle on travaille.
+    :param isIAPresente: (bool) True s'il y a une IA dans la partie.
+    :return: Renvoie le return de resultatPartie.
+    """
+
+    while not partie.finPartie():
+        gestionTour(partie, isIAPresente)
+        partie.affichage()
+
+    return partie.resultatPartie()
