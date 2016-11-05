@@ -350,13 +350,17 @@ class FormWidget(QtGui.QWidget):
                 valeur = self.partie.grilleJeu[(ligne, colonne)]
                 if isinstance(valeur, int):
                     affichage = str(valeur)
+                    style='QPushButton {background-color: #E8E8E8; color: black;}'
                 elif [ligne, colonne] == self.partie.positions:
                     affichage = "###"
+                    style='QPushButton {background-color: #71C5D1; color: black;}'
                 else:
                     affichage = "0"
+                    style='QPushButton {background-color: #F2F2F2; color: white;}'
                 button_local = self.layout().itemAtPosition(ligne, colonne)
                 button_local.widget().setParent(None)
                 button_local = QtGui.QPushButton(affichage)
+                button_local.setStyleSheet(style)
                 fonction_push_1 = lambda direction: self.buttonClicked("")
                 fonction_push_2 = functools.partial(fonction_push_1, "")
 
@@ -373,6 +377,8 @@ class FormWidget(QtGui.QWidget):
                         button_local.widget().setParent(None)
                         button_local = QtGui.QPushButton(
                             str(self.partie.grilleJeu[(ligne, colonne)]))
+                        button_local.setStyleSheet('QPushButton {background-color: #D0D0D0; color: black;}')
+
                         direction = deplacement_possible[(ligne, colonne)]
                         fonction_push_1 = lambda direction: self.buttonClicked(direction)
                         fonction_push_2 = functools.partial(fonction_push_1, direction)
@@ -407,7 +413,7 @@ class FormWidget(QtGui.QWidget):
         nom_joueur = joueur.getNom()
         self.parent().statusBar().showMessage("À " + nom_joueur + " de jouer")
         # self.gestion_position_disponible()
-        if self.isIAPresente:
+        if self.isIAPresente and not self.partie.finPartie():
             self.parent().statusBar().showMessage(nom_joueur + " réfléchit")
             directionIA = self.partie.choixDirectionIA()
             self.partie.modifieEtat(directionIA)
