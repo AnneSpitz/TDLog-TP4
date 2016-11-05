@@ -479,105 +479,59 @@ class Example(QtGui.QMainWindow):
         self.show()"""
 
 
-# class MyMainWindow(QtGui.QMainWindow):
-#     def __init__(self, parent=None):
-#         super(MyMainWindow, self).__init__(parent)
-#         self.form_widget = FormWidget(self)
-#         self.setCentralWidget(self.form_widget)
-#         self.initUI()
-#
-#     def initUI(self):
-#         # """
-#         # btn1 = QtGui.QPushButton("Button 1", self)
-#         # btn1.move(30, 50)
-#         #
-#         # btn2 = QtGui.QPushButton("Button 2", self)
-#         # btn2.move(150, 50)
-#         #
-#         # btn1.clicked.connect(self.buttonClicked)
-#         # btn2.clicked.connect(self.buttonClicked)
-#         # """
-#         self.statusBar()
-#
-#         self.setGeometry(300, 300, 290, 150)
-#         self.setWindowTitle('Event sender')
-#         self.show()
-#
-#
-#     def buttonClicked(self):
-#         sender = self.sender()
-#         self.statusBar().showMessage(sender.text() + ' was pressed')
-#
-#
-#
-# class FormWidget(QtGui.QWidget):
-#     def __init__(self, parent):
-#         super(FormWidget, self).__init__(parent)
-#         #self.layout = QtGui.QVBoxLayout(self)
-#         self.initButton(parent)
-#
-#     def initButton(self, parent):
-#         grid = QtGui.QGridLayout()
-#         self.setLayout(grid)
-#
-#
-#         names = ['Cls', 'Bck', '', 'Close',
-#                  '7', '8', '9', '/',
-#                  '4', '5', '6', '*',
-#                  '1', '2', '3', '-',
-#                  '0', '.', '=', '+']
-#
-#         positions = [(i, j) for i in range(5) for j in range(4)]
-#
-#         for position, name in zip(positions, names):
-#
-#             if name == '':
-#                 continue
-#             button = QtGui.QPushButton(name)
-#             button.clicked.connect(parent.buttonClicked)
-#             grid.addWidget(button, *position)
-#
-#     #self.statusBar()
-#
-#         self.setGeometry(300, 300, 290, 150)
-#
-#
-# def main():
-#     app = QtGui.QApplication(sys.argv)
-#     foo = MyMainWindow()
-#     sys.exit(app.exec_())
-#
-#
-# if __name__ == '__main__':
-#     main()
-#!/usr/bin/python
-# -*- coding : utf-8 -*-
-#
-# qmainwindow.py
-# Programme exemple pour la classe QMainWindow
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-import sys
-class Demo(QApplication) :
-   def __init__(self, args) :
-      QApplication.__init__(self,args)
-      # widget principal, il s'agit d'une fenêtre de dialogue
-      self.main = QMainWindow()
-      self.main.setWindowTitle("Demo QMainWindow")
-      self.main.resize(640,480)
-      #widget central : QTextEdit
-      self.edit = QTextEdit("editor", self.main)
-      self.edit.setFocus()
-      self.main.setCentralWidget(self.edit)
-      # ajout facile d'éléments dans la barre de menu
-      # NOTE : crée la barre s'il n'existe pas
-      self.main.menuBar().addAction("New")
-      self.main.menuBar().addAction("Quit")
-      # changement du message de status
-      # NOTE : crée la zone de status si inexistante
-      self.main.statusBar().showMessage("Demo en cours", 10000)
-      self.main.show()
-      self.connect(self,SIGNAL("lastWindowClosed()"),self,SLOT("quit()"))
-      self.exec_()
-if __name__ == "__main__" :
-   app=Demo(sys.argv)
+class MyMainWindow(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        super(MyMainWindow, self).__init__(parent)
+        self.form_widget = FormWidget(self)
+        self.setCentralWidget(self.form_widget)
+        self.initUI()
+
+    def initUI(self):
+        self.statusBar()
+
+        self.setGeometry(300, 300, 290, 150)
+        self.setWindowTitle('Event sender')
+        self.show()
+
+    def buttonClicked(self):
+        sender = self.sender()
+        sender.setText("LOL")
+        self.statusBar().showMessage(sender.text() + ' was pressed')
+
+
+class FormWidget(QtGui.QWidget):
+    def __init__(self, parent):
+        super(FormWidget, self).__init__(parent)
+        self.initButton(parent)
+
+    def initButton(self, parent):
+        grid = QtGui.QGridLayout()
+        self.setLayout(grid)
+
+        names = ['Cls', 'Bck', '', 'Close',
+                 '7', '8', '9', '/',
+                 '4', '5', '6', '*',
+                 '1', '2', '3', '-',
+                 '0', '.', '=', '+']
+
+        positions = [(i, j) for i in range(5) for j in range(4)]
+
+        for position, name in zip(positions, names):
+
+            if name == '':
+                continue
+            button = QtGui.QPushButton(name)
+            button.clicked.connect(parent.buttonClicked)
+            grid.addWidget(button, *position)
+
+        self.setGeometry(300, 300, 290, 150)
+
+
+def main():
+    app = QtGui.QApplication(sys.argv)
+    foo = MyMainWindow()
+    sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()

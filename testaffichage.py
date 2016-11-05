@@ -20,6 +20,7 @@ import pandas
 import game
 import customExceptions
 import outils
+import functools
 
 
 class Menu(QtGui.QWidget):
@@ -175,26 +176,25 @@ class Menu(QtGui.QWidget):
                 self.button_chargement_csv.setEnabled(False)
                 self.button_debut_partie.setEnabled(True)
 
-
-
     def but_lance_partie(self):
         self.button_debut_partie = QtGui.QPushButton('LANCER LA PARTIE', self)
         self.button_debut_partie.setEnabled(False)
         self.button_debut_partie.move(100, 250)
         self.button_debut_partie.clicked.connect(self.lancement_partie)
 
-
     def lancement_partie(self):
         self.button_debut_partie.setEnabled(False)
-        partie = game.Game(self.nom_joueur_1, self.nom_joueur_2,taille=self.taille_partie, tableauValeurs=self.chargement_csv)
-        partie.affichage()
+        partie = game.Game(self.nom_joueur_1, self.nom_joueur_2, taille=self.taille_partie,
+                           tableauValeurs=self.chargement_csv)
         if self.nombre_joueur == 1:
             isIAPresente = True
         else:
             isIAPresente = False
+        self.Affichage_jeu = MyMainWindow(partie, isIAPresente)
+        self.affichage_jeu()
 
-        #gestionJeu(partie, isIAPresente)
-
+    def affichage_jeu(self):
+        self.Affichage_jeu.show()
 
 
 def gestionTour(partie, isIAPresente):
@@ -236,6 +236,203 @@ def gestionJeu(partie, isIAPresente):
         partie.affichage()
 
     return partie.resultatPartie()
+
+
+class MyMainWindow(QtGui.QMainWindow):
+    def __init__(self, partie, isIAPresente, parent=None):
+        super(MyMainWindow, self).__init__(parent)
+        self.form_widget = FormWidget(self, partie, isIAPresente)
+        self.setCentralWidget(self.form_widget)
+        self.initUI()
+
+    def initUI(self):
+        self.statusBar()
+
+        self.setGeometry(300, 300, 290, 150)
+        self.setWindowTitle('Event sender')
+
+
+class FormWidget(QtGui.QWidget):
+    def __init__(self, parent, partie, isIAPresente):
+        super(FormWidget, self).__init__(parent)
+        self.partie = partie
+        self.isIAPresente = isIAPresente
+        self.initButton()
+
+    def initButton(self):
+        grid = QtGui.QGridLayout()
+        self.setLayout(grid)
+        grille = self.partie.grilleJeu
+
+        taille_grille = grille.getTaille()
+        valeurs = [grille[(i, j)] for i in range(taille_grille) for j in range(taille_grille)]
+
+        positions = [[i, j] for i in range(taille_grille) for j in range(taille_grille)]
+
+        for position, valeur in zip(positions, valeurs):
+
+            if isinstance(valeur, int):
+                affichage = str(valeur)
+            elif position == self.partie.positions:
+                affichage = "###"
+            else:
+                affichage = "0"
+
+            button = QtGui.QPushButton(affichage)
+            fonction_push_1 = lambda direction: self.buttonClicked("")
+            fonction_push_2 = functools.partial(fonction_push_1, "")
+
+            button.clicked.connect(fonction_push_2)
+            button.setEnabled(False)
+            grid.addWidget(button, *position)
+
+        texte_lateral = [self.partie.listeJoueurs[0].getNom(), "0",
+                         self.partie.listeJoueurs[1].getNom(), "0"]
+        for ligne in range(4):
+            text_pour_score = QtGui.QLineEdit(self)
+            text_pour_score.setReadOnly(True)
+            text_pour_score.setText(texte_lateral[ligne])
+            grid.addWidget(text_pour_score, ligne, taille_grille + 1)
+
+        self.gestion_position_disponible()
+        self.setGeometry(500, 500, 390, 350)
+
+    def resultatPartie(self):
+        """
+        Affiche le résultat de la partie et renvoie les numéro des joueurs vainqueurs.
+        :return: Renvoie la liste des indices des joueurs ayant gagnés.
+        """
+
+        # Récupération des données des joueurs.
+        listeJoueurs = self.partie.listeJoueurs
+        nombreJoueurs = len(listeJoueurs)
+        scoreJoueurs = [listeJoueurs[numeroJoueur].getScore() for numeroJoueur in
+                        range(nombreJoueurs)]
+        nomJoueurs = [listeJoueurs[numeroJoueur].getNom() for numeroJoueur in
+                      range(nombreJoueurs)]
+
+        maximumEtIndice = outils.maxEtIndice(scoreJoueurs)
+        scoreMaximal = maximumEtIndice[0]
+        nombreGagnant = maximumEtIndice[1]
+        listeGagnant = maximumEtIndice[2]
+
+        # Affichage du ou des gagnants :
+        if nombreGagnant == nombreJoueurs:
+            texte = "Il y a une égalité ! Les joueurs ont {} points.".format(str(scoreMaximal))
+
+        elif nombreGagnant == 1:
+            texte = "{} a gagné ! Son score est de {} points.".format(nomJoueurs[listeGagnant[0]],
+                                                                      scoreMaximal)
+
+        else:
+            nomGagnant = [nomJoueurs[indice] for indice in listeGagnant]
+            texte = "Les joueurs {} ont gagné avec {} points !".format(nomGagnant, scoreMaximal)
+
+        return texte
+
+    def gestion_position_disponible(self):
+        if self.partie.finPartie():
+            self.parent().statusBar().showMessage(self.resultatPartie())
+
+        positions = self.partie.positions
+
+        deplacement_possible = {}
+        for deplacement in game.directionAcceptable:
+            if self.partie.isDirectionValide(deplacement):
+                position_possible = tuple(
+                    outils.add(positions, game.directionAcceptable[deplacement]))
+                deplacement_possible[position_possible] = deplacement
+
+        taille_grille = self.partie.grilleJeu.getTaille()
+
+        for ligne in range(taille_grille):
+            for colonne in range(taille_grille):
+                valeur = self.partie.grilleJeu[(ligne, colonne)]
+                if isinstance(valeur, int):
+                    affichage = str(valeur)
+                elif [ligne, colonne] == self.partie.positions:
+                    affichage = "###"
+                else:
+                    affichage = "0"
+                button_local = self.layout().itemAtPosition(ligne, colonne)
+                button_local.widget().setParent(None)
+                button_local = QtGui.QPushButton(affichage)
+                fonction_push_1 = lambda direction: self.buttonClicked("")
+                fonction_push_2 = functools.partial(fonction_push_1, "")
+
+                button_local.clicked.connect(fonction_push_2)
+                button_local.setEnabled(False)
+                self.layout().addWidget(button_local, ligne, colonne)
+
+                for deplacement in deplacement_possible:
+                    direction_local = deplacement_possible[deplacement]
+                    position_voulu = outils.add(positions,
+                                                game.directionAcceptable[direction_local])
+                    if [ligne, colonne] == position_voulu:
+                        button_local = self.layout().itemAtPosition(ligne, colonne)
+                        button_local.widget().setParent(None)
+                        button_local = QtGui.QPushButton(
+                            str(self.partie.grilleJeu[(ligne, colonne)]))
+                        direction = deplacement_possible[(ligne, colonne)]
+                        fonction_push_1 = lambda direction: self.buttonClicked(direction)
+                        fonction_push_2 = functools.partial(fonction_push_1, direction)
+
+                        button_local.clicked.connect(fonction_push_2)
+                        button_local.setEnabled(True)
+                        self.layout().addWidget(button_local, ligne, colonne)
+
+    def buttonClicked(self, direction):
+        sender = self.sender()
+
+        sender.setEnabled(False)
+        sender.setText("0")
+
+        self.partie.modifieEtat(direction)
+        joueur_courant = (self.partie.joueurCourant + 1) % 2
+        joueur = self.partie.listeJoueurs[joueur_courant]
+        nom_joueur = joueur.getNom()
+        score = joueur.getScore()
+        text_score = self.layout().itemAtPosition(joueur_courant * 2 + 1,
+                                                  self.partie.grilleJeu.getTaille() + 1)
+        text_score.widget().setParent(None)
+
+        text_score = QtGui.QLineEdit(self)
+        text_score.setReadOnly(True)
+        text_score.setText(str(score))
+        self.layout().addWidget(text_score, joueur_courant * 2 + 1,
+                                self.partie.grilleJeu.getTaille() + 1)
+
+        joueur_courant = (self.partie.joueurCourant)
+        joueur = self.partie.listeJoueurs[joueur_courant]
+        nom_joueur = joueur.getNom()
+        self.parent().statusBar().showMessage("À " + nom_joueur + " de jouer")
+        # self.gestion_position_disponible()
+        if self.isIAPresente:
+            self.parent().statusBar().showMessage(nom_joueur + " réfléchit")
+            directionIA = self.partie.choixDirectionIA()
+            self.partie.modifieEtat(directionIA)
+            joueur_courant = (self.partie.joueurCourant + 1) % 2
+            joueur = self.partie.listeJoueurs[joueur_courant]
+            nom_joueur = joueur.getNom()
+            score = joueur.getScore()
+            text_score = self.layout().itemAtPosition(joueur_courant * 2 + 1,
+                                                      self.partie.grilleJeu.getTaille() + 1)
+            text_score.widget().setParent(None)
+
+            text_score = QtGui.QLineEdit(self)
+            text_score.setReadOnly(True)
+            text_score.setText(str(score))
+            self.layout().addWidget(text_score, joueur_courant * 2 + 1,
+                                    self.partie.grilleJeu.getTaille() + 1)
+
+            joueur_courant = (self.partie.joueurCourant)
+            joueur = self.partie.listeJoueurs[joueur_courant]
+            nom_joueur = joueur.getNom()
+            self.parent().statusBar().showMessage("À " + nom_joueur + " de jouer")
+            self.gestion_position_disponible()
+        else:
+            self.gestion_position_disponible()
+
 
 def main():
     app = QtGui.QApplication(sys.argv)
