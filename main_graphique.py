@@ -61,11 +61,11 @@ class Menu(QtGui.QWidget):
         self.show()
 
     def creeBoutonNombreJoueur(self):
-        self.nombre_joueur = 0
+        self.nombreJoueur = 0
 
-        self.button_nombre_joueur=OutilsGraphique.creeBouton(self, 'Nombre de joueurs', 20, 20, self.demandeNombreJoueurs)
+        self.boutonNombreJoueurs=OutilsGraphique.creeBouton(self, 'Nombre de joueurs', 20, 20, self.demandeNombreJoueurs)
 
-        self.text_nombre_joueur = OutilsGraphique.creeZoneTexte(self, 180, 22)
+        self.texteNombreJoueurs = OutilsGraphique.creeZoneTexte(self, 180, 22)
 
 
     def demandeNombreJoueurs(self):
@@ -73,27 +73,27 @@ class Menu(QtGui.QWidget):
                                               'Nombre de joueur (1/2):')
         if text not in {"1", "2"}:
             ok = False
-            self.text_nombre_joueur.setText("Entrer 1 ou 2 !")
+            self.texteNombreJoueurs.setText("Entrer 1 ou 2 !")
         if ok:
-            self.text_nombre_joueur.setText(text)
-            self.button_nombre_joueur.setEnabled(False)
-            self.nombre_joueur = int(text)
+            self.texteNombreJoueurs.setText(text)
+            self.boutonNombreJoueurs.setEnabled(False)
+            self.nombreJoueur = int(text)
 
-            self.button_nom_joueur_1.setEnabled(True)
-            if self.nombre_joueur == 2:
-                self.button_nom_joueur_2.setEnabled(True)
+            self.boutonNomJoueur1.setEnabled(True)
+            if self.nombreJoueur == 2:
+                self.boutonNomJoueur2.setEnabled(True)
 
     def creeBoutonsJoueurs(self):
-        self.nom_joueur_1 = ""
-        self.nom_joueur_2 = ""
+        self.nomJoueur1 = ""
+        self.nomJoueur2 = ""
 
-        self.button_nom_joueur_1 = OutilsGraphique.creeBouton(self, 'Nom joueur 1', 20, 70,
-                                                               self.demandeNomJoueur1, isEnabled=False)
-        self.text_nom_joueur_1 = OutilsGraphique.creeZoneTexte(self, 180, 72)
+        self.boutonNomJoueur1 = OutilsGraphique.creeBouton(self, 'Nom joueur 1', 20, 70,
+                                   self.demandeNomJoueur1, isEnabled=False)
+        self.texteNomJoueur1 = OutilsGraphique.creeZoneTexte(self, 180, 72)
 
-        self.button_nom_joueur_2 = OutilsGraphique.creeBouton(self, 'Nom joueur 2', 20, 110,
+        self.boutonNomJoueur2 = OutilsGraphique.creeBouton(self, 'Nom joueur 2', 20, 110,
                                     self.demandeNomJoueur2,isEnabled=False)
-        self.text_nom_joueur_2 = OutilsGraphique.creeZoneTexte(self, 180, 112)
+        self.texteNomJoueur2 = OutilsGraphique.creeZoneTexte(self, 180, 112)
 
 
     def demandeNomJoueur1(self):
@@ -101,67 +101,59 @@ class Menu(QtGui.QWidget):
         text, ok = QtGui.QInputDialog.getText(self, 'Nom joueur',
                                               'Nom du joueur 1 :')
         if ok and text != "":
-            self.button_nom_joueur_1.setEnabled(False)
-            self.nom_joueur_1 = text
-            self.text_nom_joueur_1.setText(text)
+            self.boutonNomJoueur1.setEnabled(False)
+            self.nomJoueur1 = text
+            self.texteNomJoueur1.setText(text)
 
-            if self.nombre_joueur == 1:
-                self.nom_joueur_2 = "Glados"
-                self.text_nom_joueur_2.setText(self.nom_joueur_2)
+            if self.nombreJoueur == 1:
+                self.nomJoueur2 = "Glados"
+                self.texteNomJoueur2.setText(self.nomJoueur2)
 
-        if self.nom_joueur_1 != "" and self.nom_joueur_2 != "":
-            self.button_chargement_csv.setEnabled(True)
-            self.button_taille_partie.setEnabled(True)
+        if self.nomJoueur1 != "" and self.nomJoueur2 != "":
+            self.boutonChargementCSV.setEnabled(True)
+            self.boutonTaillePartie.setEnabled(True)
 
     def demandeNomJoueur2(self):
         text, ok = QtGui.QInputDialog.getText(self, 'Nom joueur',
                                               'Nom du joueur 2 :')
         if ok and text != "":
-            self.button_nom_joueur_2.setEnabled(False)
-            self.nom_joueur_2 = text
-            self.text_nom_joueur_2.setText(text)
+            self.boutonNomJoueur2.setEnabled(False)
+            self.nomJoueur2 = text
+            self.texteNomJoueur2.setText(text)
 
-        if self.nom_joueur_1 != "" and self.nom_joueur_2 != "":
-            self.button_chargement_csv.setEnabled(True)
-            self.button_taille_partie.setEnabled(True)
+        if self.nomJoueur1 != "" and self.nomJoueur2 != "":
+            self.boutonChargementCSV.setEnabled(True)
+            self.boutonTaillePartie.setEnabled(True)
 
     def creeBoutonsAleatoire_CSV(self):
-        self.chargement_csv = 0
-        self.taille_partie = 0
+        self.chargementCSV = 0
+        self.taillePartie = 0
 
-        self.button_chargement_csv = OutilsGraphique.creeBouton(self, 'Charger un fichier', 20, 160, self.chercheFichier, isEnabled=False)
+        self.boutonChargementCSV = OutilsGraphique.creeBouton(self, 'Charger un fichier', 20, 160,
+                                        self.chercheFichier, isEnabled=False)
+        self.textChargementCSV = OutilsGraphique.creeZoneTexte(self, 180, 162)
 
-        self.text_chargement_csv = OutilsGraphique.creeZoneTexte(self, 180, 162)
-
-        self.button_taille_partie = OutilsGraphique.creeBouton(self, 'Génération aléatoire', 20,
+        self.boutonTaillePartie = OutilsGraphique.creeBouton(self, 'Génération aléatoire', 20,
                                     200, self.generePartieAleatoire, isEnabled=False)
-        self.text_taille_partie = OutilsGraphique.creeZoneTexte(self, 180, 202)
+        self.texteTaillePartie = OutilsGraphique.creeZoneTexte(self, 180, 202)
 
 
     def generePartieAleatoire(self):
-        self.button_chargement_csv.setEnabled(False)
-        text, ok = QtGui.QInputDialog.getText(self, 'Génération aléatoire',
+        self.boutonChargementCSV.setEnabled(False)
+        reponse, ok = QtGui.QInputDialog.getText(self, 'Génération aléatoire',
                                               'Taille de la grille ? (Entier impaire):')
 
         if ok:
             try:
-                text_int = int(text)
-                if text_int <= 0:
-                    raise customExceptions.TailleNegativeError
-                if text_int % 2 != 1:
-                    raise customExceptions.TaillePaireError
+                reponseInt = int(reponse)
             except ValueError:
-                self.text_taille_partie.setText("Entier requis")
-            except customExceptions.TailleNegativeError:
-                self.text_taille_partie.setText("Entier positif requis")
-            except customExceptions.TaillePaireError:
-                self.text_taille_partie.setText("Entier impair requis")
+                self.texteTaillePartie.setText("Entier requis")
             else:
-                self.text_taille_partie.setText(text)
-                self.button_taille_partie.setEnabled(False)
-                self.button_debut_partie.setEnabled(True)
-                self.taille_partie = text_int
-
+                if reponseInt % 2 == 1:
+                    self.texteTaillePartie.setText(reponse)
+                    self.boutonTaillePartie.setEnabled(False)
+                    self.boutonDebutPartie.setEnabled(True)
+                    self.taillePartie = reponseInt
 
     def chercheFichier(self):
         text, ok = QtGui.QInputDialog.getText(self, 'Chargement fichier',
@@ -172,36 +164,35 @@ class Menu(QtGui.QWidget):
             try:
                 with open(text) as csvfile:
 
-                    self.chargement_csv = pandas.read_csv(csvfile, delimiter=",", header=None)
+                    self.chargementCSV = pandas.readCSV(csvfile, delimiter=",", header=None)
 
             except FileNotFoundError:
-                self.text_chargement_csv.setText("Fichier non trouvé")
+                self.textChargementCSV.setText("Fichier non trouvé")
             else:
-                self.text_chargement_csv.setText(text)
-                self.button_taille_partie.setEnabled(False)
-                self.button_chargement_csv.setEnabled(False)
-                self.button_debut_partie.setEnabled(True)
+                self.textChargementCSV.setText(text)
+                self.boutonTaillePartie.setEnabled(False)
+                self.boutonChargementCSV.setEnabled(False)
+                self.boutonDebutPartie.setEnabled(True)
 
 
     def creeBoutonLancementPartie(self):
-        self.button_debut_partie = OutilsGraphique.creeBouton(self, 'LANCER LA PARTIE', 100,
+        self.boutonDebutPartie = OutilsGraphique.creeBouton(self, 'LANCER LA PARTIE', 100,
                                     250, self.lancementPartie, isEnabled=False)
         
 
     def lancementPartie(self):
-        self.button_debut_partie.setEnabled(False)
-        partie = game.Game(self.nom_joueur_1, self.nom_joueur_2, taille=self.taille_partie,
-                           tableauValeurs=self.chargement_csv)
-        if self.nombre_joueur == 1:
+        self.boutonDebutPartie.setEnabled(False)
+        partie = game.Game(self.nomJoueur1, self.nomJoueur2, taille=self.taillePartie,
+                           tableauValeurs=self.chargementCSV)
+        if self.nombreJoueur == 1:
             isIAPresente = True
         else:
             isIAPresente = False
-        self.Affichage_jeu = MyMainWindow(partie, isIAPresente)
-        self.affichage_jeu()
+        self.AffichageJeu = MyMainWindow(partie, isIAPresente)
+        self.affichageJeu()
 
-
-    def affichage_jeu(self):
-        self.Affichage_jeu.show()
+    def affichageJeu(self):
+        self.AffichageJeu.show()
 
 
 def gestionTour(partie, isIAPresente):
@@ -248,8 +239,8 @@ def gestionJeu(partie, isIAPresente):
 class MyMainWindow(QtGui.QMainWindow):
     def __init__(self, partie, isIAPresente, parent=None):
         super(MyMainWindow, self).__init__(parent)
-        self.form_widget = FormWidget(self, partie, isIAPresente)
-        self.setCentralWidget(self.form_widget)
+        self.formWidget = FormWidget(self, partie, isIAPresente)
+        self.setCentralWidget(self.formWidget)
         self.initUI()
 
     def initUI(self):
@@ -271,10 +262,10 @@ class FormWidget(QtGui.QWidget):
         self.setLayout(grid)
         grille = self.partie.grilleJeu
 
-        taille_grille = grille.getTaille()
-        valeurs = [grille[(i, j)] for i in range(taille_grille) for j in range(taille_grille)]
+        tailleGrille = grille.getTaille()
+        valeurs = [grille[(i, j)] for i in range(tailleGrille) for j in range(tailleGrille)]
 
-        positions = [[i, j] for i in range(taille_grille) for j in range(taille_grille)]
+        positions = [[i, j] for i in range(tailleGrille) for j in range(tailleGrille)]
 
         for position, valeur in zip(positions, valeurs):
 
@@ -286,22 +277,22 @@ class FormWidget(QtGui.QWidget):
                 affichage = "0"
 
             button = QtGui.QPushButton(affichage)
-            fonction_push_1 = lambda direction: self.buttonClicked("")
-            fonction_push_2 = functools.partial(fonction_push_1, "")
+            fonctionPush1 = lambda direction: self.buttonClicked("")
+            fonctionPush2 = functools.partial(fonctionPush1, "")
 
-            button.clicked.connect(fonction_push_2)
+            button.clicked.connect(fonctionPush2)
             button.setEnabled(False)
             grid.addWidget(button, *position)
 
-        texte_lateral = [self.partie.listeJoueurs[0].getNom(), "0",
+        texteLateral = [self.partie.listeJoueurs[0].getNom(), "0",
                          self.partie.listeJoueurs[1].getNom(), "0"]
         for ligne in range(4):
-            text_pour_score = QtGui.QLineEdit(self)
-            text_pour_score.setReadOnly(True)
-            text_pour_score.setText(texte_lateral[ligne])
-            grid.addWidget(text_pour_score, ligne, taille_grille + 1)
+            texteScore = QtGui.QLineEdit(self)
+            texteScore.setReadOnly(True)
+            texteScore.setText(texteLateral[ligne])
+            grid.addWidget(texteScore, ligne, tailleGrille + 1)
 
-        self.gestion_position_disponible()
+        self.gestionPositionDisponible()
         self.setGeometry(500, 500, 390, 350)
 
     def resultatPartie(self):
@@ -336,23 +327,23 @@ class FormWidget(QtGui.QWidget):
 
         return texte
 
-    def gestion_position_disponible(self):
+    def gestionPositionDisponible(self):
         if self.partie.finPartie():
             self.parent().statusBar().showMessage(self.resultatPartie())
 
         positions = self.partie.positions
 
-        deplacement_possible = {}
+        deplacementPossible = {}
         for deplacement in game.directionAcceptable:
             if self.partie.isDirectionValide(deplacement):
-                position_possible = tuple(
+                positionPossible = tuple(
                     outils.Outils.add(positions, game.directionAcceptable[deplacement]))
-                deplacement_possible[position_possible] = deplacement
+                deplacementPossible[positionPossible] = deplacement
 
-        taille_grille = self.partie.grilleJeu.getTaille()
+        tailleGrille = self.partie.grilleJeu.getTaille()
 
-        for ligne in range(taille_grille):
-            for colonne in range(taille_grille):
+        for ligne in range(tailleGrille):
+            for colonne in range(tailleGrille):
                 valeur = self.partie.grilleJeu[(ligne, colonne)]
                 if isinstance(valeur, int):
                     affichage = str(valeur)
@@ -363,36 +354,35 @@ class FormWidget(QtGui.QWidget):
                 else:
                     affichage = "0"
                     style = 'QPushButton {background-color: #F2F2F2; color: white;}'
-                button_local = self.layout().itemAtPosition(ligne, colonne)
-                button_local.widget().setParent(None)
-                button_local = QtGui.QPushButton(affichage)
-                button_local.setStyleSheet(style)
-                fonction_push_1 = lambda direction: self.buttonClicked("")
-                fonction_push_2 = functools.partial(fonction_push_1, "")
+                boutonLocal = self.layout().itemAtPosition(ligne, colonne)
+                boutonLocal.widget().setParent(None)
+                boutonLocal = QtGui.QPushButton(affichage)
+                boutonLocal.setStyleSheet(style)
+                fonctionPush1 = lambda direction: self.buttonClicked("")
+                fonctionPush2 = functools.partial(fonctionPush1, "")
 
-                button_local.clicked.connect(fonction_push_2)
-                button_local.setEnabled(False)
-                self.layout().addWidget(button_local, ligne, colonne)
+                boutonLocal.clicked.connect(fonctionPush2)
+                boutonLocal.setEnabled(False)
+                self.layout().addWidget(boutonLocal, ligne, colonne)
 
-                for deplacement in deplacement_possible:
-                    direction_local = deplacement_possible[deplacement]
-                    position_voulu = outils.Outils.add(positions,
-                                                       game.directionAcceptable[direction_local])
-                    if [ligne, colonne] == position_voulu:
-                        button_local = self.layout().itemAtPosition(ligne, colonne)
-                        button_local.widget().setParent(None)
-                        button_local = QtGui.QPushButton(
+                for deplacement in deplacementPossible:
+                    directionLocale = deplacementPossible[deplacement]
+                    positionVoulue = outils.Outils.add(positions,
+                                                game.directionAcceptable[directionLocale])
+                    if [ligne, colonne] == positionVoulue:
+                        boutonLocal = self.layout().itemAtPosition(ligne, colonne)
+                        boutonLocal.widget().setParent(None)
+                        boutonLocal = QtGui.QPushButton(
                             str(self.partie.grilleJeu[(ligne, colonne)]))
-                        button_local.setStyleSheet(
-                            'QPushButton {background-color: #D0D0D0; color: black;}')
+                        boutonLocal.setStyleSheet('QPushButton {background-color: #D0D0D0; color: black;}')
 
-                        direction = deplacement_possible[(ligne, colonne)]
-                        fonction_push_1 = lambda direction: self.buttonClicked(direction)
-                        fonction_push_2 = functools.partial(fonction_push_1, direction)
+                        direction = deplacementPossible[(ligne, colonne)]
+                        fonctionPush1 = lambda direction: self.buttonClicked(direction)
+                        fonctionPush2 = functools.partial(fonctionPush1, direction)
 
-                        button_local.clicked.connect(fonction_push_2)
-                        button_local.setEnabled(True)
-                        self.layout().addWidget(button_local, ligne, colonne)
+                        boutonLocal.clicked.connect(fonctionPush2)
+                        boutonLocal.setEnabled(True)
+                        self.layout().addWidget(boutonLocal, ligne, colonne)
 
     def buttonClicked(self, direction):
         sender = self.sender()
@@ -401,51 +391,51 @@ class FormWidget(QtGui.QWidget):
         sender.setText("0")
 
         self.partie.modifieEtat(direction)
-        joueur_courant = (self.partie.joueurCourant + 1) % 2
-        joueur = self.partie.listeJoueurs[joueur_courant]
-        nom_joueur = joueur.getNom()
+        joueurCourant = (self.partie.joueurCourant + 1) % 2
+        joueur = self.partie.listeJoueurs[joueurCourant]
+        nomJoueur = joueur.getNom()
         score = joueur.getScore()
-        text_score = self.layout().itemAtPosition(joueur_courant * 2 + 1,
+        texteScore = self.layout().itemAtPosition(joueurCourant * 2 + 1,
                                                   self.partie.grilleJeu.getTaille() + 1)
-        text_score.widget().setParent(None)
+        texteScore.widget().setParent(None)
 
-        text_score = QtGui.QLineEdit(self)
-        text_score.setReadOnly(True)
-        text_score.setText(str(score))
-        self.layout().addWidget(text_score, joueur_courant * 2 + 1,
+        texteScore = QtGui.QLineEdit(self)
+        texteScore.setReadOnly(True)
+        texteScore.setText(str(score))
+        self.layout().addWidget(texteScore, joueurCourant * 2 + 1,
                                 self.partie.grilleJeu.getTaille() + 1)
 
-        joueur_courant = (self.partie.joueurCourant)
-        joueur = self.partie.listeJoueurs[joueur_courant]
-        nom_joueur = joueur.getNom()
-        self.parent().statusBar().showMessage("À " + nom_joueur + " de jouer")
-        # self.gestion_position_disponible()
+        joueurCourant = (self.partie.joueurCourant)
+        joueur = self.partie.listeJoueurs[joueurCourant]
+        nomJoueur = joueur.getNom()
+        self.parent().statusBar().showMessage("À " + nomJoueur + " de jouer")
+        # self.gestionPositionDisponible()
         if self.isIAPresente and not self.partie.finPartie():
-            self.parent().statusBar().showMessage(nom_joueur + " réfléchit")
+            self.parent().statusBar().showMessage(nomJoueur + " réfléchit")
             directionIA = self.partie.choixDirectionIA()
             print(directionIA)
             self.partie.modifieEtat(directionIA)
-            joueur_courant = (self.partie.joueurCourant + 1) % 2
-            joueur = self.partie.listeJoueurs[joueur_courant]
-            nom_joueur = joueur.getNom()
+            joueurCourant = (self.partie.joueurCourant + 1) % 2
+            joueur = self.partie.listeJoueurs[joueurCourant]
+            nomJoueur = joueur.getNom()
             score = joueur.getScore()
-            text_score = self.layout().itemAtPosition(joueur_courant * 2 + 1,
+            texteScore = self.layout().itemAtPosition(joueurCourant * 2 + 1,
                                                       self.partie.grilleJeu.getTaille() + 1)
-            text_score.widget().setParent(None)
+            texteScore.widget().setParent(None)
 
-            text_score = QtGui.QLineEdit(self)
-            text_score.setReadOnly(True)
-            text_score.setText(str(score))
-            self.layout().addWidget(text_score, joueur_courant * 2 + 1,
+            texteScore = QtGui.QLineEdit(self)
+            texteScore.setReadOnly(True)
+            texteScore.setText(str(score))
+            self.layout().addWidget(texteScore, joueurCourant * 2 + 1,
                                     self.partie.grilleJeu.getTaille() + 1)
 
-            joueur_courant = (self.partie.joueurCourant)
-            joueur = self.partie.listeJoueurs[joueur_courant]
-            nom_joueur = joueur.getNom()
-            self.parent().statusBar().showMessage("À " + nom_joueur + " de jouer")
-            self.gestion_position_disponible()
+            joueurCourant = (self.partie.joueurCourant)
+            joueur = self.partie.listeJoueurs[joueurCourant]
+            nomJoueur = joueur.getNom()
+            self.parent().statusBar().showMessage("À " + nomJoueur + " de jouer")
+            self.gestionPositionDisponible()
         else:
-            self.gestion_position_disponible()
+            self.gestionPositionDisponible()
 
 
 def main():
