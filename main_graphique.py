@@ -20,6 +20,7 @@ import customExceptions
 import outils
 import functools
 
+
 class OutilsGraphique():
     @staticmethod
     def creeBouton(entite, nom, position_x, position_y, fonction, isEnabled=True):
@@ -62,10 +63,10 @@ class Menu(QtGui.QWidget):
     def boutonNombreJoueur(self):
         self.nombre_joueur = 0
 
-        self.button_nombre_joueur=OutilsGraphique.creeBouton(self, 'Nombre de joueurs', 20, 20, self.demande_nombre_joueur)
+        self.button_nombre_joueur = OutilsGraphique.creeBouton(self, 'Nombre de joueurs', 20, 20,
+                                                               self.demande_nombre_joueur)
 
         self.text_nombre_joueur = OutilsGraphique.creeZoneTexte(self, 180, 22)
-
 
     def demande_nombre_joueur(self):
         text, ok = QtGui.QInputDialog.getText(self, 'Nombre de joueur',
@@ -87,13 +88,14 @@ class Menu(QtGui.QWidget):
         self.nom_joueur_2 = ""
 
         self.button_nom_joueur_1 = OutilsGraphique.creeBouton(self, 'Nom joueur 1', 20, 70,
-                                   self.demande_nom_joueur_1, isEnabled=False)
+                                                              self.demande_nom_joueur_1,
+                                                              isEnabled=False)
         self.text_nom_joueur_1 = OutilsGraphique.creeZoneTexte(self, 180, 72)
 
         self.button_nom_joueur_2 = OutilsGraphique.creeBouton(self, 'Nom joueur 2', 20, 110,
-                                    self.demande_nom_joueur_2,isEnabled=False)
+                                                              self.demande_nom_joueur_2,
+                                                              isEnabled=False)
         self.text_nom_joueur_2 = OutilsGraphique.creeZoneTexte(self, 180, 112)
-
 
     def demande_nom_joueur_1(self):
 
@@ -129,7 +131,8 @@ class Menu(QtGui.QWidget):
         self.taille_partie = 0
 
         self.button_chargement_csv = OutilsGraphique.creeBouton(self, 'Charger un fichier', 20, 160,
-                                        self.cherche_fichier, isEnabled=False)
+                                                                self.cherche_fichier,
+                                                                isEnabled=False)
         self.text_chargement_csv = OutilsGraphique.creeZoneTexte(self, 180, 162)
 
         """
@@ -159,14 +162,22 @@ class Menu(QtGui.QWidget):
         if ok:
             try:
                 text_int = int(text)
+                if text_int <= 0:
+                    raise customExceptions.TailleNegativeError
+                if text_int % 2 != 1:
+                    raise customExceptions.TaillePaireError
             except ValueError:
                 self.text_taille_partie.setText("Entier requis")
+            except customExceptions.TailleNegativeError:
+                self.text_taille_partie.setText("Entier positif requis")
+            except customExceptions.TaillePaireError:
+                self.text_taille_partie.setText("Entier impair requis")
             else:
-                if text_int % 2 == 1:
-                    self.text_taille_partie.setText(text)
-                    self.button_taille_partie.setEnabled(False)
-                    self.button_debut_partie.setEnabled(True)
-                    self.taille_partie = text_int
+                self.text_taille_partie.setText(text)
+                self.button_taille_partie.setEnabled(False)
+                self.button_debut_partie.setEnabled(True)
+                self.taille_partie = text_int
+
 
     def cherche_fichier(self):
         text, ok = QtGui.QInputDialog.getText(self, 'Chargement fichier',
@@ -187,11 +198,13 @@ class Menu(QtGui.QWidget):
                 self.button_chargement_csv.setEnabled(False)
                 self.button_debut_partie.setEnabled(True)
 
+
     def but_lance_partie(self):
         self.button_debut_partie = QtGui.QPushButton('LANCER LA PARTIE', self)
         self.button_debut_partie.setEnabled(False)
         self.button_debut_partie.move(100, 250)
         self.button_debut_partie.clicked.connect(self.lancement_partie)
+
 
     def lancement_partie(self):
         self.button_debut_partie.setEnabled(False)
@@ -203,6 +216,7 @@ class Menu(QtGui.QWidget):
             isIAPresente = False
         self.Affichage_jeu = MyMainWindow(partie, isIAPresente)
         self.affichage_jeu()
+
 
     def affichage_jeu(self):
         self.Affichage_jeu.show()
@@ -360,13 +374,13 @@ class FormWidget(QtGui.QWidget):
                 valeur = self.partie.grilleJeu[(ligne, colonne)]
                 if isinstance(valeur, int):
                     affichage = str(valeur)
-                    style='QPushButton {background-color: #E8E8E8; color: black;}'
+                    style = 'QPushButton {background-color: #E8E8E8; color: black;}'
                 elif [ligne, colonne] == self.partie.positions:
                     affichage = "###"
-                    style='QPushButton {background-color: #71C5D1; color: black;}'
+                    style = 'QPushButton {background-color: #71C5D1; color: black;}'
                 else:
                     affichage = "0"
-                    style='QPushButton {background-color: #F2F2F2; color: white;}'
+                    style = 'QPushButton {background-color: #F2F2F2; color: white;}'
                 button_local = self.layout().itemAtPosition(ligne, colonne)
                 button_local.widget().setParent(None)
                 button_local = QtGui.QPushButton(affichage)
@@ -381,13 +395,14 @@ class FormWidget(QtGui.QWidget):
                 for deplacement in deplacement_possible:
                     direction_local = deplacement_possible[deplacement]
                     position_voulu = outils.Outils.add(positions,
-                                                game.directionAcceptable[direction_local])
+                                                       game.directionAcceptable[direction_local])
                     if [ligne, colonne] == position_voulu:
                         button_local = self.layout().itemAtPosition(ligne, colonne)
                         button_local.widget().setParent(None)
                         button_local = QtGui.QPushButton(
                             str(self.partie.grilleJeu[(ligne, colonne)]))
-                        button_local.setStyleSheet('QPushButton {background-color: #D0D0D0; color: black;}')
+                        button_local.setStyleSheet(
+                            'QPushButton {background-color: #D0D0D0; color: black;}')
 
                         direction = deplacement_possible[(ligne, colonne)]
                         fonction_push_1 = lambda direction: self.buttonClicked(direction)
