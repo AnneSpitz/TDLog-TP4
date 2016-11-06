@@ -12,7 +12,6 @@
 
 import pandas
 
-#import IA
 import game
 import customExceptions
 
@@ -62,7 +61,7 @@ def creationOuImportationPartie(nomJoueur1, nomJoueur2):
         # Si on ne trouve pas le fichier, on change la réponse de l'utilisateur
         except FileNotFoundError:
             print("Fichier non trouvé.\nNous allons générer une grille aléatoire.")
-            reponse="n"
+            reponse = "n"
             pass
         else:
             partie = game.Game(nomJoueur1, nomJoueur2, tableauValeurs=fichier)

@@ -20,6 +20,7 @@ import customExceptions
 import outils
 import functools
 
+
 class OutilsGraphique():
     @staticmethod
     def creeBouton(entite, nom, position_x, position_y, fonction, isEnabled=True):
@@ -172,6 +173,7 @@ class Menu(QtGui.QWidget):
                 self.boutonTaillePartie.setEnabled(False)
                 self.boutonChargementCSV.setEnabled(False)
                 self.boutonDebutPartie.setEnabled(True)
+
 
     def creeBoutonLancementPartie(self):
         self.boutonDebutPartie = OutilsGraphique.creeBouton(self, 'LANCER LA PARTIE', 100,
