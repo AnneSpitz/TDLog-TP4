@@ -416,6 +416,7 @@ class FormWidget(QtGui.QWidget):
         if self.isIAPresente and not self.partie.finPartie():
             self.parent().statusBar().showMessage(nom_joueur + " réfléchit")
             directionIA = self.partie.choixDirectionIA()
+            print(directionIA)
             self.partie.modifieEtat(directionIA)
             joueur_courant = (self.partie.joueurCourant + 1) % 2
             joueur = self.partie.listeJoueurs[joueur_courant]

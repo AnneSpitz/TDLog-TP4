@@ -97,11 +97,11 @@ class Grid:
         maxLength = max(len(str(nombre)) for nombre in point)
 
         # On parcours la grille, en l'affichant par ligne.
-        for ordonnee in range(self.getTaille()):
+        for abscisse in range(self.getTaille()):
 
             ligneAAfficher = ""
 
-            for abscisse in range(self.getTaille()):
+            for ordonnee in range(self.getTaille()):
 
                 # Si on est à la place du pion :
                 if [abscisse, ordonnee] == position:

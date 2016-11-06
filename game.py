@@ -26,8 +26,8 @@ import outils
 tabDirectionAcceptable = [
     {"8": [0, -1], "4": [-1, 0], "2": [0, 1], "6": [1, 0], "7": [-1, -1], "9": [1, -1],
      "1": [-1, 1], "3": [1, 1]},
-    {"z": [0, -1], "q": [-1, 0], "x": [0, 1], "d": [1, 0], "a": [-1, -1], "e": [1, -1],
-     "w": [-1, 1], "c": [1, 1]}]
+    {"z": [-1, 0], "q": [0, -1], "x": [1, 0], "d": [0, 1], "a": [-1, -1], "e": [-1, 1],
+     "w": [1, -1], "c": [1, 1]}]
 
 commandesChoisies = 1
 directionAcceptable = tabDirectionAcceptable[commandesChoisies]
