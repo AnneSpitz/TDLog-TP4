@@ -47,27 +47,27 @@ class Menu(QtGui.QWidget):
         self.initUI()
 
     def initUI(self):
-        self.boutonNombreJoueur()
+        self.creeBoutonNombreJoueur()
 
-        self.but_noms_joueurs()
+        self.creeBoutonsJoueurs()
 
-        self.but_partie_aleat_chargee()
+        self.creeBoutonsAleatoire_CSV()
 
-        self.but_lance_partie()
+        self.creeBoutonLancementPartie()
 
         self.setGeometry(200, 200, 320, 300)
         self.setWindowTitle('Menu du jeu')
         self.show()
 
-    def boutonNombreJoueur(self):
+    def creeBoutonNombreJoueur(self):
         self.nombre_joueur = 0
 
-        self.button_nombre_joueur=OutilsGraphique.creeBouton(self, 'Nombre de joueurs', 20, 20, self.demande_nombre_joueur)
+        self.button_nombre_joueur=OutilsGraphique.creeBouton(self, 'Nombre de joueurs', 20, 20, self.demandeNombreJoueurs)
 
         self.text_nombre_joueur = OutilsGraphique.creeZoneTexte(self, 180, 22)
 
 
-    def demande_nombre_joueur(self):
+    def demandeNombreJoueurs(self):
         text, ok = QtGui.QInputDialog.getText(self, 'Nombre de joueur',
                                               'Nombre de joueur (1/2):')
         if text not in {"1", "2"}:
@@ -82,20 +82,20 @@ class Menu(QtGui.QWidget):
             if self.nombre_joueur == 2:
                 self.button_nom_joueur_2.setEnabled(True)
 
-    def but_noms_joueurs(self):
+    def creeBoutonsJoueurs(self):
         self.nom_joueur_1 = ""
         self.nom_joueur_2 = ""
 
         self.button_nom_joueur_1 = OutilsGraphique.creeBouton(self, 'Nom joueur 1', 20, 70,
-                                   self.demande_nom_joueur_1, isEnabled=False)
+                                   self.demandeNomJoueur1, isEnabled=False)
         self.text_nom_joueur_1 = OutilsGraphique.creeZoneTexte(self, 180, 72)
 
         self.button_nom_joueur_2 = OutilsGraphique.creeBouton(self, 'Nom joueur 2', 20, 110,
-                                    self.demande_nom_joueur_2,isEnabled=False)
+                                    self.demandeNomJoueur2,isEnabled=False)
         self.text_nom_joueur_2 = OutilsGraphique.creeZoneTexte(self, 180, 112)
 
 
-    def demande_nom_joueur_1(self):
+    def demandeNomJoueur1(self):
 
         text, ok = QtGui.QInputDialog.getText(self, 'Nom joueur',
                                               'Nom du joueur 1 :')
@@ -112,7 +112,7 @@ class Menu(QtGui.QWidget):
             self.button_chargement_csv.setEnabled(True)
             self.button_taille_partie.setEnabled(True)
 
-    def demande_nom_joueur_2(self):
+    def demandeNomJoueur2(self):
         text, ok = QtGui.QInputDialog.getText(self, 'Nom joueur',
                                               'Nom du joueur 2 :')
         if ok and text != "":
@@ -124,34 +124,20 @@ class Menu(QtGui.QWidget):
             self.button_chargement_csv.setEnabled(True)
             self.button_taille_partie.setEnabled(True)
 
-    def but_partie_aleat_chargee(self):
+    def creeBoutonsAleatoire_CSV(self):
         self.chargement_csv = 0
         self.taille_partie = 0
 
         self.button_chargement_csv = OutilsGraphique.creeBouton(self, 'Charger un fichier', 20, 160,
-                                        self.cherche_fichier, isEnabled=False)
+                                        self.chercheFichier, isEnabled=False)
         self.text_chargement_csv = OutilsGraphique.creeZoneTexte(self, 180, 162)
 
-        """
-        self.button_chargement_csv = QtGui.QPushButton('Charger un fichier', self)
-        self.button_chargement_csv.move(20, 160)
-        self.button_chargement_csv.setEnabled(False)
-        self.button_chargement_csv.clicked.connect(self.cherche_fichier)
+        self.button_taille_partie = OutilsGraphique.creeBouton(self, 'Génération aléatoire', 20,
+                                    200, self.generePartieAleatoire, isEnabled=False)
+        self.text_taille_partie = OutilsGraphique.creeZoneTexte(self, 180, 202)
 
-        self.text_chargement_csv = QtGui.QLineEdit(self)
-        self.text_chargement_csv.setReadOnly(True)
-        self.text_chargement_csv.move(180, 162)
-        """
-        self.button_taille_partie = QtGui.QPushButton('Génération aléatoire', self)
-        self.button_taille_partie.move(20, 200)
-        self.button_taille_partie.setEnabled(False)
-        self.button_taille_partie.clicked.connect(self.genere_aleatoire)
 
-        self.text_taille_partie = QtGui.QLineEdit(self)
-        self.text_taille_partie.setReadOnly(True)
-        self.text_taille_partie.move(180, 202)
-
-    def genere_aleatoire(self):
+    def generePartieAleatoire(self):
         self.button_chargement_csv.setEnabled(False)
         text, ok = QtGui.QInputDialog.getText(self, 'Génération aléatoire',
                                               'Taille de la grille ? (Entier impaire):')
@@ -168,7 +154,7 @@ class Menu(QtGui.QWidget):
                     self.button_debut_partie.setEnabled(True)
                     self.taille_partie = text_int
 
-    def cherche_fichier(self):
+    def chercheFichier(self):
         text, ok = QtGui.QInputDialog.getText(self, 'Chargement fichier',
                                               'Entrer nom du fichier (sans extension):')
 
@@ -187,13 +173,12 @@ class Menu(QtGui.QWidget):
                 self.button_chargement_csv.setEnabled(False)
                 self.button_debut_partie.setEnabled(True)
 
-    def but_lance_partie(self):
-        self.button_debut_partie = QtGui.QPushButton('LANCER LA PARTIE', self)
-        self.button_debut_partie.setEnabled(False)
-        self.button_debut_partie.move(100, 250)
-        self.button_debut_partie.clicked.connect(self.lancement_partie)
+    def creeBoutonLancementPartie(self):
+        self.button_debut_partie = OutilsGraphique.creeBouton(self, 'LANCER LA PARTIE', 100,
+                                    250, self.lancementPartie, isEnabled=False)
+        
 
-    def lancement_partie(self):
+    def lancementPartie(self):
         self.button_debut_partie.setEnabled(False)
         partie = game.Game(self.nom_joueur_1, self.nom_joueur_2, taille=self.taille_partie,
                            tableauValeurs=self.chargement_csv)
