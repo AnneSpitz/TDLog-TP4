@@ -3,12 +3,10 @@
 
 # /////////////////////////////////////////////////////
 #
-# TP3 du module de Techniques de Développement LOGiciel
+# TP4 du module de Techniques de Développement LOGiciel
 #
 # Groupe 3
 # TP réalisé par RIU Clément et SPITZ Anne
-#
-# Rendu le 26 octobre 2016
 #
 # /////////////////////////////////////////////////////
 
@@ -323,7 +321,6 @@ class FormWidget(QtGui.QWidget):
         elif nombreGagnant == 1:
             texte = "{} a gagné ! Son score est de {} points.".format(nomJoueurs[listeGagnant[0]],
                                                                       scoreMaximal)
-
         else:
             nomGagnant = [nomJoueurs[indice] for indice in listeGagnant]
             texte = "Les joueurs {} ont gagné avec {} points !".format(nomGagnant, scoreMaximal)

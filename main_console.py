@@ -3,18 +3,16 @@
 
 # /////////////////////////////////////////////////////
 #
-# TP3 du module de Techniques de Développement LOGiciel
+# TP4 du module de Techniques de Développement LOGiciel
 #
 # Groupe 3
 # TP réalisé par RIU Clément et SPITZ Anne
-#
-# Rendu le 26 octobre 2016
 #
 # /////////////////////////////////////////////////////
 
 import pandas
 
-
+#import IA
 import game
 import customExceptions
 
@@ -148,3 +146,19 @@ def gestionJeu(partie, isIAPresente):
         partie.affichage()
 
     return partie.resultatPartie()
+
+
+# /////////////////////////////////////////////////////////////////////////////////////////////////
+# Corps du programme :
+
+
+informationJoueurs = demandeJoueurs()
+
+partie = creationOuImportationPartie(informationJoueurs[1], informationJoueurs[2])
+
+if informationJoueurs[0] == "1":
+    isIAPresente = True
+else:
+    isIAPresente = False
+
+gestionJeu(partie, isIAPresente)
