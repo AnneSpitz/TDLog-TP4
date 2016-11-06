@@ -150,14 +150,14 @@ def gestionJeu(partie, isIAPresente):
 # /////////////////////////////////////////////////////////////////////////////////////////////////
 # Corps du programme :
 
+if __name__ == '__main__':
+    informationJoueurs = demandeJoueurs()
 
-informationJoueurs = demandeJoueurs()
+    partie = creationOuImportationPartie(informationJoueurs[1], informationJoueurs[2])
 
-partie = creationOuImportationPartie(informationJoueurs[1], informationJoueurs[2])
+    if informationJoueurs[0] == "1":
+        isIAPresente = True
+    else:
+        isIAPresente = False
 
-if informationJoueurs[0] == "1":
-    isIAPresente = True
-else:
-    isIAPresente = False
-
-gestionJeu(partie, isIAPresente)
+    gestionJeu(partie, isIAPresente)
