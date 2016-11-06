@@ -113,7 +113,7 @@ class Game:
 
         else:
 
-            positionVoulue = outils.add(self.positions, directionAcceptable[direction])
+            positionVoulue = outils.Outils.add(self.positions, directionAcceptable[direction])
             # On vérifie ensuite si la position voulue n'est pas dans le tableau :
             if positionVoulue not in self.grilleJeu:
                 return True
@@ -137,7 +137,7 @@ class Game:
         # on passe la position précédente à "visitée" et on change de joueur.
 
 
-        self.positions = outils.add(self.positions, directionAcceptable[direction])
+        self.positions = outils.Outils.add(self.positions, directionAcceptable[direction])
 
         positions = self.positions
         joueurCourant = self.joueurCourant
@@ -159,7 +159,7 @@ class Game:
         # Dans toutes les directions possibles on vérifie qu'il y en ai au moins une d'acceptable
         #  (soit non-visitée).
         for direction in directionAcceptable.values():
-            positionTestee = outils.add(self.positions, direction)
+            positionTestee = outils.Outils.add(self.positions, direction)
 
             if positionTestee in self.grilleJeu and isinstance(self.grilleJeu[positionTestee], int):
                 return False
@@ -180,7 +180,7 @@ class Game:
         nomJoueurs = [listeJoueurs[numeroJoueur].getNom() for numeroJoueur in
                       range(nombreJoueurs)]
 
-        maximumEtIndice = outils.maxEtIndice(scoreJoueurs)
+        maximumEtIndice = outils.Outils.maxEtIndice(scoreJoueurs)
         scoreMaximal = maximumEtIndice[0]
         nombreGagnant = maximumEtIndice[1]
         listeGagnant = maximumEtIndice[2]

@@ -20,6 +20,25 @@ import customExceptions
 import outils
 import functools
 
+class OutilsGraphique():
+    @staticmethod
+    def creeBouton(entite, nom, position_x, position_y, fonction, isEnabled=True):
+        boutonCree = QtGui.QPushButton(nom, entite)
+        boutonCree.move(position_x, position_y)
+        boutonCree.clicked.connect(fonction)
+
+        boutonCree.setEnabled(isEnabled)
+
+        return boutonCree
+
+    @staticmethod
+    def creeZoneTexte(entite, position_x, position_y, readOnly=True):
+        zoneTexte = QtGui.QLineEdit(entite)
+        zoneTexte.setReadOnly(readOnly)
+        zoneTexte.move(position_x, position_y)
+
+        return zoneTexte
+
 
 class Menu(QtGui.QWidget):
     def __init__(self):
@@ -28,7 +47,7 @@ class Menu(QtGui.QWidget):
         self.initUI()
 
     def initUI(self):
-        self.but_nombre_joueur()
+        self.boutonNombreJoueur()
 
         self.but_noms_joueurs()
 
@@ -40,15 +59,13 @@ class Menu(QtGui.QWidget):
         self.setWindowTitle('Menu du jeu')
         self.show()
 
-    def but_nombre_joueur(self):
+    def boutonNombreJoueur(self):
         self.nombre_joueur = 0
-        self.button_nombre_joueur = QtGui.QPushButton('Nombre de joueur', self)
-        self.button_nombre_joueur.move(20, 20)
-        self.button_nombre_joueur.clicked.connect(self.demande_nombre_joueur)
 
-        self.text_nombre_joueur = QtGui.QLineEdit(self)
-        self.text_nombre_joueur.setReadOnly(True)
-        self.text_nombre_joueur.move(180, 22)
+        self.button_nombre_joueur=OutilsGraphique.creeBouton(self, 'Nombre de joueurs', 20, 20, self.demande_nombre_joueur)
+
+        self.text_nombre_joueur = OutilsGraphique.creeZoneTexte(self, 180, 22)
+
 
     def demande_nombre_joueur(self):
         text, ok = QtGui.QInputDialog.getText(self, 'Nombre de joueur',
@@ -69,23 +86,14 @@ class Menu(QtGui.QWidget):
         self.nom_joueur_1 = ""
         self.nom_joueur_2 = ""
 
-        self.button_nom_joueur_1 = QtGui.QPushButton('Nom joueur 1', self)
-        self.button_nom_joueur_1.move(20, 70)
-        self.button_nom_joueur_1.setEnabled(False)
-        self.button_nom_joueur_1.clicked.connect(self.demande_nom_joueur_1)
+        self.button_nom_joueur_1 = OutilsGraphique.creeBouton(self, 'Nom joueur 1', 20, 70,
+                                   self.demande_nom_joueur_1, isEnabled=False)
+        self.text_nom_joueur_1 = OutilsGraphique.creeZoneTexte(self, 180, 72)
 
-        self.text_nom_joueur_1 = QtGui.QLineEdit(self)
-        self.text_nom_joueur_1.setReadOnly(True)
-        self.text_nom_joueur_1.move(180, 72)
+        self.button_nom_joueur_2 = OutilsGraphique.creeBouton(self, 'Nom joueur 2', 20, 110,
+                                    self.demande_nom_joueur_2,isEnabled=False)
+        self.text_nom_joueur_2 = OutilsGraphique.creeZoneTexte(self, 180, 112)
 
-        self.button_nom_joueur_2 = QtGui.QPushButton('Nom joueur 2', self)
-        self.button_nom_joueur_2.move(20, 110)
-        self.button_nom_joueur_2.setEnabled(False)
-        self.button_nom_joueur_2.clicked.connect(self.demande_nom_joueur_2)
-
-        self.text_nom_joueur_2 = QtGui.QLineEdit(self)
-        self.text_nom_joueur_2.setReadOnly(True)
-        self.text_nom_joueur_2.move(180, 112)
 
     def demande_nom_joueur_1(self):
 
@@ -120,6 +128,11 @@ class Menu(QtGui.QWidget):
         self.chargement_csv = 0
         self.taille_partie = 0
 
+        self.button_chargement_csv = OutilsGraphique.creeBouton(self, 'Charger un fichier', 20, 160,
+                                        self.cherche_fichier, isEnabled=False)
+        self.text_chargement_csv = OutilsGraphique.creeZoneTexte(self, 180, 162)
+
+        """
         self.button_chargement_csv = QtGui.QPushButton('Charger un fichier', self)
         self.button_chargement_csv.move(20, 160)
         self.button_chargement_csv.setEnabled(False)
@@ -128,7 +141,7 @@ class Menu(QtGui.QWidget):
         self.text_chargement_csv = QtGui.QLineEdit(self)
         self.text_chargement_csv.setReadOnly(True)
         self.text_chargement_csv.move(180, 162)
-
+        """
         self.button_taille_partie = QtGui.QPushButton('Génération aléatoire', self)
         self.button_taille_partie.move(20, 200)
         self.button_taille_partie.setEnabled(False)
@@ -309,7 +322,7 @@ class FormWidget(QtGui.QWidget):
         nomJoueurs = [listeJoueurs[numeroJoueur].getNom() for numeroJoueur in
                       range(nombreJoueurs)]
 
-        maximumEtIndice = outils.maxEtIndice(scoreJoueurs)
+        maximumEtIndice = outils.Outils.maxEtIndice(scoreJoueurs)
         scoreMaximal = maximumEtIndice[0]
         nombreGagnant = maximumEtIndice[1]
         listeGagnant = maximumEtIndice[2]
@@ -337,7 +350,7 @@ class FormWidget(QtGui.QWidget):
         for deplacement in game.directionAcceptable:
             if self.partie.isDirectionValide(deplacement):
                 position_possible = tuple(
-                    outils.add(positions, game.directionAcceptable[deplacement]))
+                    outils.Outils.add(positions, game.directionAcceptable[deplacement]))
                 deplacement_possible[position_possible] = deplacement
 
         taille_grille = self.partie.grilleJeu.getTaille()
@@ -367,7 +380,7 @@ class FormWidget(QtGui.QWidget):
 
                 for deplacement in deplacement_possible:
                     direction_local = deplacement_possible[deplacement]
-                    position_voulu = outils.add(positions,
+                    position_voulu = outils.Outils.add(positions,
                                                 game.directionAcceptable[direction_local])
                     if [ligne, colonne] == position_voulu:
                         button_local = self.layout().itemAtPosition(ligne, colonne)
